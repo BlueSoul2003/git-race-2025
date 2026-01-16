@@ -525,11 +525,235 @@
                 transform: scale(1.2);
             }
         }
+
+        /* Tutorial Overlay */
+        .tutorial-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .tutorial-card {
+            background: linear-gradient(135deg, rgba(48, 43, 99, 0.95), rgba(15, 12, 41, 0.95));
+            border: 2px solid rgba(0, 245, 255, 0.3);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 245, 255, 0.2);
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tutorial-step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .step-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .step-dot.active {
+            background: #00f5ff;
+            box-shadow: 0 0 15px #00f5ff;
+        }
+
+        .step-dot.completed {
+            background: #00ff64;
+        }
+
+        .tutorial-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: bounce 2s ease infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .tutorial-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #00f5ff, #ff00e5);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tutorial-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+
+        .tutorial-content code {
+            background: rgba(0, 245, 255, 0.2);
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: #00f5ff;
+            font-family: monospace;
+        }
+
+        .tutorial-content strong {
+            color: #ff00e5;
+        }
+
+        .tutorial-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .tutorial-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tutorial-btn-primary {
+            background: linear-gradient(135deg, #00f5ff, #00a8ff);
+            color: #0a0a1a;
+        }
+
+        .tutorial-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 245, 255, 0.4);
+        }
+
+        .tutorial-btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .tutorial-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .tutorial-skip {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .tutorial-skip:hover {
+            color: #fff;
+        }
+
+        /* Help Button */
+        .help-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff00e5, #00f5ff);
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1500;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255, 0, 229, 0.4);
+        }
+
+        .help-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(255, 0, 229, 0.6);
+        }
     </style>
 </head>
 
 <body>
     <div id="confetti-container"></div>
+
+    <!-- Tutorial Overlay -->
+    <div class="tutorial-overlay" id="tutorialOverlay" style="display: none;">
+        <button class="tutorial-skip" onclick="closeTutorial()">Skip Tutorial ✕</button>
+        <div class="tutorial-card">
+            <div class="tutorial-step-indicator" id="stepIndicator">
+                <div class="step-dot active" data-step="0"></div>
+                <div class="step-dot" data-step="1"></div>
+                <div class="step-dot" data-step="2"></div>
+                <div class="step-dot" data-step="3"></div>
+                <div class="step-dot" data-step="4"></div>
+            </div>
+            <div class="tutorial-icon" id="tutorialIcon">👋</div>
+            <h2 class="tutorial-title" id="tutorialTitle">Welcome to Git Race!</h2>
+            <div class="tutorial-content" id="tutorialContent">
+                This is a <strong>live racing game</strong> where you compete to get your Pull Request merged
+                first!<br><br>
+                Let's learn how to participate and win! 🏆
+            </div>
+            <div class="tutorial-buttons">
+                <button class="tutorial-btn tutorial-btn-secondary" id="prevBtn" onclick="prevStep()"
+                    style="display: none;">← Back</button>
+                <button class="tutorial-btn tutorial-btn-primary" id="nextBtn" onclick="nextStep()">Let's Go! →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Button -->
+    <button class="help-btn" id="helpBtn" onclick="showTutorial()" title="Show Tutorial">?</button>
 
     <!-- Setup Screen -->
     <div class="setup-screen" id="setupScreen">
@@ -674,6 +898,109 @@
         let refreshInterval = null;
         let countdownInterval = null;
         let countdown = 10;
+
+        // Tutorial System
+        let currentTutorialStep = 0;
+        const tutorialSteps = [
+            {
+                icon: '👋',
+                title: 'Welcome to Git Race!',
+                content: `This is a <strong>live racing game</strong> where you compete to get your Pull Request merged first!<br><br>
+                         Let's learn how to participate and win! 🏆`
+            },
+            {
+                icon: '🍴',
+                title: 'Step 1: Fork the Repository',
+                content: `Go to <code>github.com/hovahyii/git-race-2025</code><br><br>
+                         Click the <strong>"Fork"</strong> button in the top-right corner.<br>
+                         This creates your own copy of the repository!`
+            },
+            {
+                icon: '📥',
+                title: 'Step 2: Clone & Edit',
+                content: `Clone YOUR fork using:<br>
+                         <code>git clone https://github.com/YOUR-NAME/git-race-2025.git</code><br><br>
+                         Then open <code>guestbook.md</code> and add your name!`
+            },
+            {
+                icon: '📤',
+                title: 'Step 3: Push Your Changes',
+                content: `Commit and push your changes:<br><br>
+                         <code>git add .</code><br>
+                         <code>git commit -m "Add my name"</code><br>
+                         <code>git push origin main</code>`
+            },
+            {
+                icon: '🚀',
+                title: 'Step 4: Open a Pull Request',
+                content: `Go back to GitHub and click <strong>"Contribute"</strong> → <strong>"Open Pull Request"</strong><br><br>
+                         Once the instructor merges your PR, you'll appear on the leaderboard! 🎉<br><br>
+                         <strong>First merged PR wins!</strong> Good luck! 🏆`
+            }
+        ];
+
+        function showTutorial() {
+            currentTutorialStep = 0;
+            updateTutorialUI();
+            document.getElementById('tutorialOverlay').style.display = 'flex';
+        }
+
+        function closeTutorial() {
+            document.getElementById('tutorialOverlay').style.display = 'none';
+            localStorage.setItem('gitrace_tutorial_seen', 'true');
+        }
+
+        function nextStep() {
+            if (currentTutorialStep < tutorialSteps.length - 1) {
+                currentTutorialStep++;
+                updateTutorialUI();
+            } else {
+                closeTutorial();
+            }
+        }
+
+        function prevStep() {
+            if (currentTutorialStep > 0) {
+                currentTutorialStep--;
+                updateTutorialUI();
+            }
+        }
+
+        function updateTutorialUI() {
+            const step = tutorialSteps[currentTutorialStep];
+            document.getElementById('tutorialIcon').textContent = step.icon;
+            document.getElementById('tutorialTitle').textContent = step.title;
+            document.getElementById('tutorialContent').innerHTML = step.content;
+
+            // Update step dots
+            const dots = document.querySelectorAll('.step-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active', 'completed');
+                if (index < currentTutorialStep) {
+                    dot.classList.add('completed');
+                } else if (index === currentTutorialStep) {
+                    dot.classList.add('active');
+                }
+            });
+
+            // Update buttons
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            prevBtn.style.display = currentTutorialStep > 0 ? 'block' : 'none';
+            nextBtn.textContent = currentTutorialStep === tutorialSteps.length - 1 ? "Let's Race! 🏁" : 'Next →';
+        }
+
+        // Check if first visit
+        function checkFirstVisit() {
+            if (!localStorage.getItem('gitrace_tutorial_seen')) {
+                setTimeout(showTutorial, 500);
+            }
+        }
+
+        // Initialize tutorial on page load
+        document.addEventListener('DOMContentLoaded', checkFirstVisit);
+
 
         function startGame() {
             const repoInput = document.getElementById('repoInput').value.trim();
